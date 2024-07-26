@@ -1,15 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
-    ../features/nix.nix
-    ../features/fish.nix
-    ../features/prometheus.nix
+    (inputs.homelab + "/features/nix")
+    (inputs.homelab + "/features/fish.nix")
+    (inputs.homelab + "/features/telemetry")
     ../features/binfmt.nix
   ];
 
   # Substituters
-  nix.settings.substituters = [ "https://binarycache.home.lostattractor.net" "https://mirror.sjtu.edu.cn/nix-channels/store" ];
+  nix.settings.substituters = [ "https://binarycache.home.lostattractor.net" ];
   nix.settings.trusted-public-keys =  [ "binarycache.home.lostattractor.net:nB258qoytYrdCe2pcI6qJ/M9R0l7Q5l9Bu5ryCbzItc=" ];
 
   users = {
@@ -30,19 +30,9 @@
   # Unprivilege User
   nix.settings.trusted-users = [ "root" "nixremote" ];
 
-  # Store Optimise & Auto Clean
-  nix.settings.auto-optimise-store = true;
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
-
   # Auto Clean
-  nix.extraOptions = ''
-    min-free = ${toString (15 * 1024 * 1024 * 1024)}
-    max-free = ${toString (30 * 1024 * 1024 * 1024)}
-  '';
+  nix.settings.min-free = "${toString (15 * 1024 * 1024 * 1024)}";
+  nix.settings.max-free = "${toString (30 * 1024 * 1024 * 1024)}";
 
   # Basic Packages
   environment.systemPackages = with pkgs; [ htop btop duf ];

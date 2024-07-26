@@ -7,15 +7,18 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    homelab.url = "github:lostattractor/homelab";
+    homelab.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { nixpkgs, deploy-rs, ... } @ inputs : rec {
     # Hydra@PVE2.home.lostattractor.net
     nixosConfigurations."hydra@pve2.home.lostattractor.net" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
       modules = [
-        ./hardware/lxc
         ./configuration/hydra
+        (inputs.homelab + "/hardware/lxc")
         { networking.hostName = "hydra"; }
         inputs.sops-nix.nixosModules.sops
       ];
@@ -23,9 +26,10 @@
     # NixBuilder@PVE.home.lostattractor.net
     nixosConfigurations."nixbuilder@pve.home.lostattractor.net" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
       modules = [
-        ./hardware/lxc
         ./configuration/nixbuilder
+        (inputs.homelab + "/hardware/lxc")
         { networking.hostName = "nixbuilder1"; }
         inputs.sops-nix.nixosModules.sops
       ];
