@@ -1,15 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
-    ../features/nix.nix
-    ../features/fish.nix
-    ../features/prometheus.nix
+    (inputs.homelab + "/features/nix/minimal.nix")
+    (inputs.homelab + "/features/fish.nix")
+    (inputs.homelab + "/features/telemetry")
     ../features/binfmt.nix
     ./features/builders.nix
     ./features/hydra.nix
     ./features/nix-serve.nix
-    ./features/nginx.nix
+    (inputs.homelab + "/features/nginx.nix")
     ./secrets/nix/access-tokens.nix
   ];
 
@@ -26,10 +26,8 @@
   nix.settings.trusted-users = [ "root" ];
 
   # Auto Clean
-  nix.extraOptions = ''
-    min-free = ${toString (30 * 1024 * 1024 * 1024)}
-    max-free = ${toString (60 * 1024 * 1024 * 1024)}
-  '';
+  nix.settings.min-free = "${toString (30 * 1024 * 1024 * 1024)}";
+  nix.settings.max-free = "${toString (60 * 1024 * 1024 * 1024)}";
 
   # Basic Packages
   environment.systemPackages = with pkgs; [ htop btop duf ];

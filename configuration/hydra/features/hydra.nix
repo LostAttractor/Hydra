@@ -14,4 +14,10 @@
       max_output_size = 34359738367 # 1024^3 * 32 - 1
     '';
   };
+
+  services.nginx.virtualHosts."hydra.home.lostattractor.net" = {
+    locations."/".proxyPass = "http://localhost:${toString config.services.hydra.port}";
+    forceSSL = true;
+    enableACME = true;
+  };
 }
