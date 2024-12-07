@@ -8,7 +8,7 @@
     ../features/binfmt.nix
     ./features/builders.nix
     ./features/hydra.nix
-    ./features/nix-serve.nix
+    ./features/harmonia.nix
     (inputs.homelab + "/features/nginx.nix")
     ./secrets/nix/access-tokens.nix
   ];
