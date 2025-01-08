@@ -28,14 +28,6 @@ in
       supportedFeatures = supportedFeatures;
       mandatoryFeatures = [ ];
     }
-    {
-      hostName = "nixremote@nixbuilder1.home.lostattractor.net";
-      systems = systems;
-      maxJobs = 2;
-      speedFactor = 2;
-      supportedFeatures = supportedFeatures;
-      mandatoryFeatures = [ ];
-    }
   ];
   nix.distributedBuilds = true;
   # Optional, useful when the builder has a faster internet connection than yours

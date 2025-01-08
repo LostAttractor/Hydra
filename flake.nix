@@ -24,27 +24,6 @@
         inputs.sops-nix.nixosModules.sops
       ];
     };
-    # NixBuilder@Harvester0.home.lostattractor.net
-    nixosConfigurations."nixbuilder@harvester0.home.lostattractor.net" = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        ./configuration
-        ./configuration/nixbuilder
-        (inputs.homelab + "/hardware/kvm/kubevirt.nix")
-        { networking.hostName = "nixbuilder1"; }
-        ({ lib, ... }: {
-          # Enable Swap
-          swapDevices = [ {
-            device = "/var/lib/swapfile";
-            size = 16*1024;
-          } ];
-        })
-        { nix.settings.cores = 14; }
-        { nix.settings.max-jobs = 1; }
-        inputs.sops-nix.nixosModules.sops
-      ];
-    };
 
     # Deploy-RS Configuration
     deploy = {
@@ -54,10 +33,6 @@
       nodes."hydra@pve2.home.lostattractor.net" = {
         hostname = "hydra.home.lostattractor.net";
         profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos nixosConfigurations."hydra@pve2.home.lostattractor.net";
-      };
-      nodes."nixbuilder@harvester0.home.lostattractor.net" = {
-        hostname = "nixbuilder1.home.lostattractor.net";
-        profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos nixosConfigurations."nixbuilder@harvester0.home.lostattractor.net";
       };
     };
 
