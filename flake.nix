@@ -17,6 +17,7 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
+        ./configuration
         ./configuration/hydra
         (inputs.homelab + "/hardware/lxc")
         { networking.hostName = "hydra"; }
@@ -28,6 +29,7 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
+        ./configuration
         ./configuration/nixbuilder
         (inputs.homelab + "/hardware/lxc")
         { networking.hostName = "nixbuilder1"; }

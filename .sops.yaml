@@ -5,7 +5,15 @@
 keys:
   - &admin_lostattractor 57EDCBEDDE7ABA6B44377FF2B96725F36430B3D1
   - &server_hydra age1fyefu5ngp2quj6t6fhk5j5jdp03amsrfqg2u0ry06q2wnxhuhcfqcakjmd
+  - &server_nixbuilder1 age1zqmxgh7ywt9pz7f6w4srt4nyfwc3s6srpts0k2hxmytj4exfzuksvp63tk
 creation_rules:
+  - path_regex: secrets/promtail.yaml
+    key_groups:
+    - pgp:
+      - *admin_lostattractor
+      age:
+      - *server_hydra
+      - *server_nixbuilder1
   - path_regex: secrets/.+.yaml
     key_groups:
     - pgp:
