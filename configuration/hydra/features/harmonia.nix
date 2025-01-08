@@ -4,6 +4,7 @@
   services.harmonia = {
     enable = true;
     signKeyPaths = [ config.sops.secrets."nix-serve/privkey".path ];
+    settings.priority = 42;
   };
 
   services.nginx = {
