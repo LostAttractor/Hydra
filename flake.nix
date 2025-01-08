@@ -60,6 +60,9 @@
       tarball = mapAttrs' (name: config:
         nameValuePair name config.config.system.build.tarball)
         nixosConfigurations;
+      image = mapAttrs' (name: config: 
+        nameValuePair name config.config.system.build.image)
+        nixosConfigurations;
     };
   };
 }
